@@ -21,7 +21,7 @@ import { images } from './images';
             [columnMenu]="{ filter: true }"
         >
             <ng-template kendoGridToolbarTemplate>
-                <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event.target.value)"/>
+                <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event)"/>
                 <kendo-grid-spacer></kendo-grid-spacer>
                 <button kendoGridExcelCommand type="button" icon="file-excel">Export to Excel</button>
                 <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
@@ -32,7 +32,7 @@ import { images } from './images';
                 [class]="{'text-center': true}"
                 [resizable]="false"
                 [columnMenu]="false"
-                showSelectAll="true"
+                [showSelectAll]="true"
             ></kendo-grid-checkbox-column>
             <kendo-grid-column-group title="Employee" [columnMenu]="false">
                 <kendo-grid-column field="full_name" title="Contact Name" [width]="220">
@@ -51,7 +51,7 @@ import { images } from './images';
                     [resizable]="false"
                 >
                     <ng-template kendoGridCellTemplate let-dataItem>
-                        <img class="flag" [src]="flagURL(dataItem)" width="30">
+                        <img class="flag" [src]="flagURL(dataItem)" width="30" alt="flag" />
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column
@@ -97,7 +97,7 @@ import { images } from './images';
                             [transitions]="true"
                             [seriesDefaults]="{labels: {background: 'none', visible: true, format: '{0}%'}}"
                         >
-                            <kendo-chart-area opacity="0" [width]="200"></kendo-chart-area>
+                            <kendo-chart-area [opacity]="0" [width]="200"></kendo-chart-area>
                             <kendo-chart-value-axis>
                                 <kendo-chart-value-axis-item [min]="0" [max]="130">
                                 </kendo-chart-value-axis-item>
@@ -160,17 +160,21 @@ import { images } from './images';
   // styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
+  // @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
   public gridData: any[] = employees;
-  public gridView: any[];
+  public gridView: any[] = [];
 
   public mySelection: string[] = [];
+
+  constructor() {
+  }
 
   public ngOnInit(): void {
     this.gridView = this.gridData;
   }
 
-  public onFilter(inputValue: string): void {
+  public onFilter(event: Event): void {
+    const inputValue = (<HTMLInputElement>event.target).value;
     this.gridView = process(this.gridData, {
       filter: {
         logic: "or",
@@ -204,17 +208,17 @@ export class AppComponent implements OnInit {
       }
     }).data;
 
-    this.dataBinding.skip = 0;
+    // this.dataBinding.skip = 0;
   }
 
-  private photoURL(dataItem: any): string {
+  public photoURL(dataItem: any): string {
     const code: string = dataItem.img_id + dataItem.gender;
     const image: any = images;
 
     return image[code];
   }
 
-  private flagURL(dataItem: any): string {
+  public flagURL(dataItem: any): string {
     const code: string = dataItem.country;
     const image: any = images;
 
