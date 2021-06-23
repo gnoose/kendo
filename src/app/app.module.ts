@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { KendoComponentModule } from './kendo-component/kendo-component.module';
+import { KendoUiTableModule } from './kendo-component/kendo-ui-table.module';
 
 import 'hammerjs';
 
@@ -14,7 +14,7 @@ import 'hammerjs';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    KendoComponentModule
+    KendoUiTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,14 +8,14 @@ import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-import { KendoComponentComponent } from './kendo-component.component';
+import { KendoUiTableComponent } from './kendo-ui-table.component';
 import { RatingComponent } from './rating.component';
 
 import 'hammerjs';
 
 @NgModule({
   declarations: [
-    KendoComponentComponent,
+    KendoUiTableComponent,
     RatingComponent,
   ],
   imports: [
@@ -30,4 +30,4 @@ import 'hammerjs';
     ExcelModule
   ]
 })
-export class KendoComponentModule { }
+export class KendoUiTableModule { }

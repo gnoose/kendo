@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { KendoComponentComponent } from './kendo-component/kendo-component.component';
+import { KendoUiTableComponent } from './kendo-component/kendo-ui-table.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: KendoComponentComponent
+    component: KendoUiTableComponent
   }
 ];
 

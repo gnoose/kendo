@@ -6,10 +6,10 @@ import { images } from './images';
 
 @Component({
   selector: 'app-kendo-component',
-  templateUrl: './kendo-component.component.html',
-  styleUrls: ['./kendo-component.component.scss']
+  templateUrl: './kendo-ui-table.component.html',
+  styleUrls: ['./kendo-ui-table.component.scss']
 })
-export class KendoComponentComponent implements OnInit {
+export class KendoUiTableComponent implements OnInit {
   // @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
   public gridData: any[] = employees;
   public gridView: any[] = [];
