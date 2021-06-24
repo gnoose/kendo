@@ -1,4 +1,5 @@
 <kendo-grid
+  #kendoGrid
   [kendoGridBinding]="gridView"
   kendoGridSelectBy="id"
   [selectedKeys]="mySelection"
@@ -14,6 +15,7 @@
   <ng-template kendoGridToolbarTemplate>
     <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event)"/>
     <kendo-grid-spacer></kendo-grid-spacer>
+    <button type="button" (click)="conditionData.filter ? loadFilter() : saveFilter($event)">{{ conditionData.filter ? 'Load Filter' : 'Save Filter' }}</button>
     <button kendoGridExcelCommand type="button" icon="file-excel">Export to Excel</button>
     <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
   </ng-template>

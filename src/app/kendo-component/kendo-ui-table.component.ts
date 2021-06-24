@@ -1,22 +1,41 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
 import { process } from '@progress/kendo-data-query';
 import { employees } from './employees';
 import { images } from './images';
+
+interface ConditionForm {
+  filter: any;
+  columns: any;
+  columnList: any;
+  sort: any;
+  group: null;
+}
 
 @Component({
   selector: 'app-kendo-component',
   templateUrl: './kendo-ui-table.component.html',
   styleUrls: ['./kendo-ui-table.component.scss']
 })
+
 export class KendoUiTableComponent implements OnInit {
+  @ViewChild('kendoGrid') kendoGrid: any;
   // @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
   public gridData: any[] = employees;
   public gridView: any[] = [];
-
   public mySelection: string[] = [];
+  public conditionData: ConditionForm;
 
-  constructor() {
+  constructor(
+    private cdf: ChangeDetectorRef
+  ) {
+    this.conditionData = {
+      filter: null,
+      columns: null,
+      columnList: null,
+      sort: null,
+      group: null
+    };
   }
 
   public ngOnInit(): void {
@@ -73,5 +92,31 @@ export class KendoUiTableComponent implements OnInit {
     const image: any = images;
 
     return image[code];
+  }
+
+  public saveFilter($event: Event): void {
+    debugger;
+    this.conditionData = {
+      filter: this.kendoGrid.filter,
+      columns: this.kendoGrid.columns,
+      columnList: this.kendoGrid.columnList,
+      sort: this.kendoGrid.sort,
+      group: this.kendoGrid.group
+    }
+
+    console.log('kendoGrid = ', this.kendoGrid);
+  }
+
+  public loadFilter(): void {
+    this.kendoGrid.filter = this.conditionData.filter;
+    // this.kendoGrid.columns = this.conditionData.columns;
+    // this.kendoGrid.columnList = this.conditionData.columnList;
+    this.kendoGrid.sort = this.conditionData.sort;
+    this.kendoGrid.group = this.conditionData.group;
+    this.gridView = process(this.gridData, { filter: { ...this.conditionData.filter }, sort: this.conditionData.sort }).data;
+
+
+
+    this.conditionData.filter = null;
   }
 }
