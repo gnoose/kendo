@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GridModule, PDFModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import { InputsModule } from '@progress/kendo-angular-inputs';
+import { PopupModule } from "@progress/kendo-angular-popup";
 
 import { KendoUiTableComponent } from './kendo-ui-table.component';
 import { RatingComponent } from './rating.component';
@@ -27,7 +28,8 @@ import 'hammerjs';
     ChartsModule,
     InputsModule,
     PDFModule,
-    ExcelModule
+    ExcelModule,
+    PopupModule
   ]
 })
 export class KendoUiTableModule { }

@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
 import { process } from '@progress/kendo-data-query';
 import { employees } from './employees';
 import { images } from './images';
+import {
+  PopupService,
+  PopupRef
+} from '@progress/kendo-angular-popup';
 
 interface ConditionForm {
   filter: any;
@@ -21,21 +25,15 @@ interface ConditionForm {
 export class KendoUiTableComponent implements OnInit {
   @ViewChild('kendoGrid') kendoGrid: any;
   // @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
+  private popupRef: any;
   public gridData: any[] = employees;
   public gridView: any[] = [];
   public mySelection: string[] = [];
-  public conditionData: ConditionForm;
-
+  public filterList: ConditionForm[];
   constructor(
-    private cdf: ChangeDetectorRef
+    private popupService: PopupService
   ) {
-    this.conditionData = {
-      filter: null,
-      columns: null,
-      columnList: null,
-      sort: null,
-      group: null
-    };
+    this.filterList = [];
   }
 
   public ngOnInit(): void {
@@ -96,27 +94,43 @@ export class KendoUiTableComponent implements OnInit {
 
   public saveFilter($event: Event): void {
     debugger;
-    this.conditionData = {
+    this.filterList.push({
       filter: this.kendoGrid.filter,
       columns: this.kendoGrid.columns,
       columnList: this.kendoGrid.columnList,
       sort: this.kendoGrid.sort,
       group: this.kendoGrid.group
+    });
+
+    console.log('kendoGrid = ', this.filterList);
+  }
+
+  public loadFilter(index: number): void {
+    this.kendoGrid.filter = this.filterList[index].filter;
+    // this.kendoGrid.columns = this.filterList[index].columns;
+    // this.kendoGrid.columnList = this.filterList[index].columnList;
+    // this.kendoGrid.sort = this.filterList[index].sort;
+    // this.kendoGrid.group = this.filterList[index].group;
+    // this.kendoGrid.sort();
+    // this.gridView = process(this.gridData, { filter: { ...this.filterList[index].filter }}).data;
+    // this.gridView = process(this.gridData, { filter: { ...this.filterList[index].filter }, sort: this.filterList[index].sort }).data;
+
+
+
+
+    this.filterList[index].filter = null;
+  }
+
+  public togglePopup(anchor: HTMLElement, template: TemplateRef<any>) {
+    if (this.popupRef) {
+      this.popupRef.close();
+      this.popupRef = null;
+    } else {
+      this.popupRef = this.popupService.open({
+        anchor: anchor as any,
+        content: template
+      });
     }
-
-    console.log('kendoGrid = ', this.kendoGrid);
   }
 
-  public loadFilter(): void {
-    this.kendoGrid.filter = this.conditionData.filter;
-    // this.kendoGrid.columns = this.conditionData.columns;
-    // this.kendoGrid.columnList = this.conditionData.columnList;
-    this.kendoGrid.sort = this.conditionData.sort;
-    this.kendoGrid.group = this.conditionData.group;
-    this.gridView = process(this.gridData, { filter: { ...this.conditionData.filter }, sort: this.conditionData.sort }).data;
-
-
-
-    this.conditionData.filter = null;
-  }
 }

@@ -1,3 +1,11 @@
+<ng-template #template>
+  <p style="margin: 10px 20px; font-weight: bold;">Saved Filter List</p>
+  <p style="margin: 5px; text-align: center;" *ngIf="!filterList.length">No Saved Data</p>
+  <ng-container *ngFor="let filter of filterList; let i = index;">
+    <p style="margin: 5px; text-align: center;cursor: pointer;" (click)="loadFilter(i)">Filter - {{ i + 1 }}</p>
+  </ng-container>
+</ng-template>
+
 <kendo-grid
   #kendoGrid
   [kendoGridBinding]="gridView"
@@ -15,7 +23,12 @@
   <ng-template kendoGridToolbarTemplate>
     <input placeholder="Search in all columns..." kendoTextBox (input)="onFilter($event)"/>
     <kendo-grid-spacer></kendo-grid-spacer>
-    <button type="button" (click)="conditionData.filter ? loadFilter() : saveFilter($event)">{{ conditionData.filter ? 'Load Filter' : 'Save Filter' }}</button>
+    <div>
+      <button #anchor (click)="togglePopup(anchor, template)" class="k-button">Show Filters</button>
+    </div>
+    <div>
+      <button (click)="saveFilter($event)" class="k-button">Save Filters</button>
+    </div>
     <button kendoGridExcelCommand type="button" icon="file-excel">Export to Excel</button>
     <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
   </ng-template>

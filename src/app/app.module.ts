@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { KendoUiTableModule } from './kendo-component/kendo-ui-table.module';
 
 import 'hammerjs';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 @NgModule({
   declarations: [
@@ -14,7 +18,9 @@ import 'hammerjs';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    KendoUiTableModule
+    KendoUiTableModule,
+    PopupModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
