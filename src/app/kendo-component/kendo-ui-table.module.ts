@@ -13,6 +13,7 @@ import { KendoUiTableComponent } from './kendo-ui-table.component';
 import { RatingComponent } from './rating.component';
 
 import 'hammerjs';
+import { StatePersistingService } from './kendo-ui-table.service';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import 'hammerjs';
     PDFModule,
     ExcelModule,
     PopupModule
-  ]
+  ],
+  providers: [StatePersistingService],
 })
 export class KendoUiTableModule { }

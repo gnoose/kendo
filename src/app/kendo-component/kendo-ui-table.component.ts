@@ -1,20 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { DataBindingDirective } from '@progress/kendo-angular-grid';
-import { process } from '@progress/kendo-data-query';
-import { employees } from './employees';
+import { ColumnMenuSettings, DataBindingDirective, GridComponent } from '@progress/kendo-angular-grid';
+import { CompositeFilterDescriptor, process, SortDescriptor, State } from '@progress/kendo-data-query';
+
+// import { employees } from './employees';
+import { sampleProducts as employees } from './kendo-ui-table.model';
 import { images } from './images';
 import {
   PopupService,
   PopupRef
 } from '@progress/kendo-angular-popup';
-
-interface ConditionForm {
-  filter: any;
-  columns: any;
-  columnList: any;
-  sort: any;
-  group: null;
-}
+import { ColumnSettings, GridSettings } from './kendo-ui-table.model';
+import { StatePersistingService } from './kendo-ui-table.service';
+import { DataResult } from '@progress/kendo-data-query/dist/npm/data-result.interface';
 
 @Component({
   selector: 'app-kendo-component',
@@ -22,106 +19,107 @@ interface ConditionForm {
   styleUrls: ['./kendo-ui-table.component.scss']
 })
 
-export class KendoUiTableComponent implements OnInit {
-  @ViewChild('kendoGrid') kendoGrid: any;
-  // @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
-  private popupRef: any;
-  public gridData: any[] = employees;
-  public gridView: any[] = [];
-  public mySelection: string[] = [];
-  public filterList: ConditionForm[];
-  constructor(
-    private popupService: PopupService
-  ) {
-    this.filterList = [];
-  }
+export class KendoUiTableComponent {
+  public gridSettings: GridSettings = {
+    state: {
+      skip: 0,
+      take: 5,
 
-  public ngOnInit(): void {
-    this.gridView = this.gridData;
-  }
-
-  public onFilter(event: Event): void {
-    const inputValue = (<HTMLInputElement>event.target).value;
-    this.gridView = process(this.gridData, {
+      // Initial filter descriptor
       filter: {
-        logic: "or",
-        filters: [
-          {
-            field: 'full_name',
-            operator: 'contains',
-            value: inputValue
-          },
-          {
-            field: 'job_title',
-            operator: 'contains',
-            value: inputValue
-          },
-          {
-            field: 'budget',
-            operator: 'contains',
-            value: inputValue
-          },
-          {
-            field: 'phone',
-            operator: 'contains',
-            value: inputValue
-          },
-          {
-            field: 'address',
-            operator: 'contains',
-            value: inputValue
-          }
-        ],
+        logic: 'and',
+        filters: []
       }
-    }).data;
+    },
+    gridData: process(employees, {
+      skip: 0,
+      take: 5,
+      // Initial filter descriptor
+      filter: {
+        logic: 'and',
+        filters: []
+      }
+    }),
+    columnsConfig: [{
+      field: 'ProductID',
+      title: 'ID',
+      filterable: false,
+      _width: 60
+    }, {
+      field: 'ProductName',
+      title: 'Product Name',
+      filterable: true,
+      _width: 300
+    }, {
+      field: 'FirstOrderedOn',
+      title: 'First Ordered On',
+      filter: 'date',
+      format: '{0:d}',
+      _width: 240,
+      filterable: true
+    }, {
+      field: 'UnitPrice',
+      title: 'Unit Price',
+      filter: 'numeric',
+      format: '{0:c}',
+      _width: 180,
+      filterable: true
+    }, {
+      field: 'Discontinued',
+      filter: 'boolean',
+      _width: 120,
+      filterable: true
+    }]
+  };
+  public emptyFilter: CompositeFilterDescriptor;
+  public emptyData: DataResult;
+  public emptySort: SortDescriptor[];
+  public savedList: GridSettings[];
+  private popupRef: any;
 
-    // this.dataBinding.skip = 0;
+  public get savedStateExists(): boolean {
+    return !!this.persistingService.get('gridSettings');
   }
 
-  public photoURL(dataItem: any): string {
-    const code: string = dataItem.img_id + dataItem.gender;
-    const image: any = images;
+  constructor(
+    public persistingService: StatePersistingService,
+    private popupService: PopupService
+    ) {
+    // const gridSettings: GridSettings = this.persistingService.get('gridSettings');
+    //
+    // if (gridSettings !== null) {
+    //   this.gridSettings = this.mapGridSettings(gridSettings);
+    // }
+    const savedGrids: GridSettings[] = this.persistingService.getArray<GridSettings>('gridSettings');
+    this.savedList = savedGrids;
 
-    return image[code];
-  }
+    this.emptyFilter = {
+      logic: 'and',
+      filters: []
+    };
+    this.emptyData = {
+      data: employees,
+      total: employees.length
+    }
+    this.emptySort = [{
+      field: '',
+      dir: 'asc'
+    }];
 
-  public flagURL(dataItem: any): string {
-    const code: string = dataItem.country;
-    const image: any = images;
-
-    return image[code];
-  }
-
-  public saveFilter($event: Event): void {
-    debugger;
-    this.filterList.push({
-      filter: this.kendoGrid.filter,
-      columns: this.kendoGrid.columns,
-      columnList: this.kendoGrid.columnList,
-      sort: this.kendoGrid.sort,
-      group: this.kendoGrid.group
-    });
-
-    console.log('kendoGrid = ', this.filterList);
+    this.savedList = [];
   }
 
   public loadFilter(index: number): void {
-    this.kendoGrid.filter = this.filterList[index].filter;
-    // this.kendoGrid.columns = this.filterList[index].columns;
-    // this.kendoGrid.columnList = this.filterList[index].columnList;
-    // this.kendoGrid.sort = this.filterList[index].sort;
-    // this.kendoGrid.group = this.filterList[index].group;
-    // this.kendoGrid.sort();
-    // this.gridView = process(this.gridData, { filter: { ...this.filterList[index].filter }}).data;
-    // this.gridView = process(this.gridData, { filter: { ...this.filterList[index].filter }, sort: this.filterList[index].sort }).data;
+    const gridSettings: GridSettings = this.savedList[index];
 
-
-
-
-    this.filterList[index].filter = null;
+    if (gridSettings !== null) {
+      this.gridSettings = this.mapGridSettings(gridSettings);
+    }
   }
 
   public togglePopup(anchor: HTMLElement, template: TemplateRef<any>) {
+    const savedGrids: GridSettings[] = this.persistingService.getArray<GridSettings>('gridSettings');
+    this.savedList = savedGrids;
     if (this.popupRef) {
       this.popupRef.close();
       this.popupRef = null;
@@ -133,4 +131,54 @@ export class KendoUiTableComponent implements OnInit {
     }
   }
 
+  public dataStateChange(state: State): void {
+    this.gridSettings.state = state;
+    this.gridSettings.gridData = process(employees, state);
+  }
+
+  public saveGridSettings(grid: GridComponent): void {
+    const columns = grid.columns;
+
+    const gridConfig = {
+      state: this.gridSettings.state,
+      columnsConfig: columns.toArray().map((item: any) => {
+        return Object.keys(item)
+          .filter(propName => !propName.toLowerCase()
+            .includes('template'))
+          .reduce((acc, curr) => ({...acc, ...{[curr]: item[curr]}}), <ColumnSettings> {});
+      })
+    };
+
+    let savedGrids: GridSettings[] = this.persistingService.getArray<GridSettings>('gridSettings');
+    if (savedGrids) {
+      savedGrids = [...savedGrids, gridConfig];
+    } else {
+      savedGrids = [gridConfig];
+    }
+    this.persistingService.setArray('gridSettings', savedGrids);
+    // this.persistingService.set('gridSettings', gridConfig);
+  }
+
+  public mapGridSettings(gridSettings: GridSettings): GridSettings {
+    const state = gridSettings.state;
+    this.mapDateFilter(state.filter);
+
+    return {
+      state,
+      columnsConfig: gridSettings.columnsConfig.sort((a: any, b: any) => a.orderIndex - b.orderIndex),
+      gridData: process(employees, state)
+    };
+  }
+
+  private mapDateFilter = (descriptor: any) => {
+    const filters = descriptor.filters || [];
+
+    filters.forEach((filter: any) => {
+      if (filter.filters) {
+        this.mapDateFilter(filter);
+      } else if (filter.field === 'FirstOrderedOn' && filter.value) {
+        filter.value = new Date(filter.value);
+      }
+    });
+  }
 }
