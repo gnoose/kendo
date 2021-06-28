@@ -1,6 +1,5 @@
 import { GridSettings } from './kendo-ui-table.model';
 import { Injectable } from '@angular/core';
-import { State } from '@progress/kendo-data-query';
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
