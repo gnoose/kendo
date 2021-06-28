@@ -1,9 +1,11 @@
 <ng-template #subMenu>
-  <p style="margin: 10px 20px; font-weight: bold;">Saved Filter List</p>
-  <p style="margin: 5px; text-align: center;" *ngIf="!savedList.length">No Saved Data</p>
-  <ng-container *ngFor="let filter of savedList; let i = index;">
-    <p style="margin: 5px; text-align: center;cursor: pointer;" (click)="loadFilter(i)">Filter - {{ i + 1 }}</p>
-  </ng-container>
+  <div class="submenu">
+    <p class="submenu-title">Saved Filter List</p>
+    <p class="submenu-nodata" *ngIf="!savedList.length">No Saved Data</p>
+    <ng-container *ngFor="let filter of savedList; let i = index;">
+      <p class="submenu-item" (click)="loadFilter(i)">Filter - {{ i + 1 }}</p>
+    </ng-container>
+  </div>
 </ng-template>
 
 <kendo-grid

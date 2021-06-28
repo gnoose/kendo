@@ -1,0 +1,24 @@
+.submenu {
+  //background: #ff6358;
+}
+
+.submenu-title {
+  margin: 10px 20px;
+  font-weight: bold;
+}
+
+.submenu-nodata {
+  padding: 5px;
+  text-align: center;
+}
+
+.submenu-item {
+  padding: 5px;
+  margin: 0px;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    background: #78778B;
+    color: white;
+  }
+}
