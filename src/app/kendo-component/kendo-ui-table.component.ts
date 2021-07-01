@@ -1,15 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ColumnMenuSettings, DataBindingDirective, GridComponent } from '@progress/kendo-angular-grid';
+import { Component, Input, TemplateRef } from '@angular/core';
+import { GridComponent } from '@progress/kendo-angular-grid';
 import { CompositeFilterDescriptor, process, SortDescriptor, State } from '@progress/kendo-data-query';
 
-// import { employees } from './employees';
-import { sampleProducts as employees } from './kendo-ui-table.model';
-import { images } from './images';
-import {
-  PopupService,
-  PopupRef
-} from '@progress/kendo-angular-popup';
-import { ColumnSettings, GridSettings } from './kendo-ui-table.model';
+import { ColumnSettings, GridSettings, sampleData, sampleGridSetting } from './kendo-ui-table.model';
+import { PopupService } from '@progress/kendo-angular-popup';
 import { StatePersistingService } from './kendo-ui-table.service';
 import { DataResult } from '@progress/kendo-data-query/dist/npm/data-result.interface';
 
@@ -20,57 +14,8 @@ import { DataResult } from '@progress/kendo-data-query/dist/npm/data-result.inte
 })
 
 export class KendoUiTableComponent {
-  public gridSettings: GridSettings = {
-    state: {
-      skip: 0,
-      take: 5,
-
-      // Initial filter descriptor
-      filter: {
-        logic: 'and',
-        filters: []
-      }
-    },
-    gridData: process(employees, {
-      skip: 0,
-      take: 5,
-      // Initial filter descriptor
-      filter: {
-        logic: 'and',
-        filters: []
-      }
-    }),
-    columnsConfig: [{
-      field: 'ProductID',
-      title: 'ID',
-      filterable: false,
-      _width: 60
-    }, {
-      field: 'ProductName',
-      title: 'Product Name',
-      filterable: true,
-      _width: 300
-    }, {
-      field: 'FirstOrderedOn',
-      title: 'First Ordered On',
-      filter: 'date',
-      format: '{0:d}',
-      _width: 240,
-      filterable: true
-    }, {
-      field: 'UnitPrice',
-      title: 'Unit Price',
-      filter: 'numeric',
-      format: '{0:c}',
-      _width: 180,
-      filterable: true
-    }, {
-      field: 'Discontinued',
-      filter: 'boolean',
-      _width: 120,
-      filterable: true
-    }]
-  };
+  @Input() employees = sampleData;
+  @Input() gridSettings: GridSettings = sampleGridSetting;
   public emptyFilter: CompositeFilterDescriptor;
   public emptyData: DataResult;
   public emptySort: SortDescriptor[];
@@ -85,11 +30,6 @@ export class KendoUiTableComponent {
     public persistingService: StatePersistingService,
     private popupService: PopupService
     ) {
-    // const gridSettings: GridSettings = this.persistingService.get('gridSettings');
-    //
-    // if (gridSettings !== null) {
-    //   this.gridSettings = this.mapGridSettings(gridSettings);
-    // }
     const savedGrids: GridSettings[] = this.persistingService.getArray<GridSettings>('gridSettings');
     this.savedList = savedGrids;
 
@@ -98,8 +38,8 @@ export class KendoUiTableComponent {
       filters: []
     };
     this.emptyData = {
-      data: employees,
-      total: employees.length
+      data: this.employees,
+      total: this.employees.length
     }
     this.emptySort = [{
       field: '',
@@ -133,7 +73,7 @@ export class KendoUiTableComponent {
 
   public dataStateChange(state: State): void {
     this.gridSettings.state = state;
-    this.gridSettings.gridData = process(employees, state);
+    this.gridSettings.gridData = process(this.employees, state);
   }
 
   public saveGridSettings(grid: GridComponent): void {
@@ -166,7 +106,7 @@ export class KendoUiTableComponent {
     return {
       state,
       columnsConfig: gridSettings.columnsConfig.sort((a: any, b: any) => a.orderIndex - b.orderIndex),
-      gridData: process(employees, state)
+      gridData: process(this.employees, state)
     };
   }
 

@@ -1,4 +1,4 @@
-import { State, DataResult } from "@progress/kendo-data-query";
+import { State, DataResult, process } from "@progress/kendo-data-query";
 
 export interface ColumnSettings {
   field: string;
@@ -12,14 +12,13 @@ export interface ColumnSettings {
   hidden?: boolean;
 }
 
-
 export interface GridSettings {
   columnsConfig: ColumnSettings[];
   state: State;
   gridData?: DataResult;
 }
 
-export const sampleProducts = [
+export const sampleData = [
   {
     "ProductID": 1,
     "ProductName": "Chai",
@@ -91,114 +90,58 @@ export const sampleProducts = [
       "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
     },
     "FirstOrderedOn": new Date(1996, 9, 19)
-  },
-  {
-    "ProductID": 5,
-    "ProductName": "Chef Anton's Gumbo Mix",
-    "SupplierID": 2,
-    "CategoryID": 2,
-    "QuantityPerUnit": "36 boxes",
-    "UnitPrice": 21.35,
-    "UnitsInStock": 0,
-    "UnitsOnOrder": 0,
-    "ReorderLevel": 0,
-    "Discontinued": true,
-    "Category": {
-      "CategoryID": 2,
-      "CategoryName": "Condiments",
-      "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
-    },
-    "FirstOrderedOn": new Date(1996, 7, 17)
-  },
-  {
-    "ProductID": 6,
-    "ProductName": "Grandma's Boysenberry Spread",
-    "SupplierID": 3,
-    "CategoryID": 2,
-    "QuantityPerUnit": "12 - 8 oz jars",
-    "UnitPrice": 25,
-    "UnitsInStock": 120,
-    "UnitsOnOrder": 0,
-    "ReorderLevel": 25,
-    "Discontinued": false,
-    "Category": {
-      "CategoryID": 2,
-      "CategoryName": "Condiments",
-      "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
-    },
-    "FirstOrderedOn": new Date(1996, 9, 19)
-  },
-  {
-    "ProductID": 7,
-    "ProductName": "Uncle Bob's Organic Dried Pears",
-    "SupplierID": 3,
-    "CategoryID": 7,
-    "QuantityPerUnit": "12 - 1 lb pkgs.",
-    "UnitPrice": 30,
-    "UnitsInStock": 15,
-    "UnitsOnOrder": 0,
-    "ReorderLevel": 10,
-    "Discontinued": false,
-    "Category": {
-      "CategoryID": 7,
-      "CategoryName": "Produce",
-      "Description": "Dried fruit and bean curd"
-    },
-    "FirstOrderedOn": new Date(1996, 7, 22)
-  },
-  {
-    "ProductID": 8,
-    "ProductName": "Northwoods Cranberry Sauce",
-    "SupplierID": 3,
-    "CategoryID": 2,
-    "QuantityPerUnit": "12 - 12 oz jars",
-    "UnitPrice": 40,
-    "UnitsInStock": 6,
-    "UnitsOnOrder": 0,
-    "ReorderLevel": 0,
-    "Discontinued": false,
-    "Category": {
-      "CategoryID": 2,
-      "CategoryName": "Condiments",
-      "Description": "Sweet and savory sauces, relishes, spreads, and seasonings"
-    },
-    "FirstOrderedOn": new Date(1996, 11, 1)
-  },
-  {
-    "ProductID": 9,
-    "ProductName": "Mishi Kobe Niku",
-    "SupplierID": 4,
-    "CategoryID": 6,
-    "QuantityPerUnit": "18 - 500 g pkgs.",
-    "UnitPrice": 97,
-    "UnitsInStock": 29,
-    "UnitsOnOrder": 0,
-    "ReorderLevel": 0,
-    "Discontinued": true,
-    "Category": {
-      "CategoryID": 6,
-      "CategoryName": "Meat/Poultry",
-      "Description": "Prepared meats"
-    },
-    "FirstOrderedOn": new Date(1997, 1, 21)
-  },
-  {
-    "ProductID": 10,
-    "ProductName": "Ikura",
-    "SupplierID": 4,
-    "CategoryID": 8,
-    "QuantityPerUnit": "12 - 200 ml jars",
-    "UnitPrice": 31,
-    "UnitsInStock": 31,
-    "UnitsOnOrder": 0,
-    "ReorderLevel": 0,
-    "Discontinued": false,
-    "Category": {
-      "CategoryID": 8,
-      "CategoryName": "Seafood",
-      "Description": "Seaweed and fish"
-    },
-    "FirstOrderedOn": new Date(1996, 8, 5)
   }
 ];
 
+
+export const sampleGridSetting: GridSettings = {
+  state: {
+    skip: 0,
+    take: 5,
+
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: []
+    }
+  },
+  gridData: process(sampleData, {
+    skip: 0,
+    take: 5,
+    // Initial filter descriptor
+    filter: {
+      logic: 'and',
+      filters: []
+    }
+  }),
+  columnsConfig: [{
+    field: 'ProductID',
+    title: 'ID',
+    filterable: false,
+    _width: 60
+  }, {
+    field: 'ProductName',
+    title: 'Product Name',
+    filterable: true,
+    _width: 300
+  }, {
+    field: 'FirstOrderedOn',
+    title: 'First Ordered On',
+    filter: 'date',
+    format: '{0:d}',
+    _width: 240,
+    filterable: true
+  }, {
+    field: 'UnitPrice',
+    title: 'Unit Price',
+    filter: 'numeric',
+    format: '{0:c}',
+    _width: 180,
+    filterable: true
+  }, {
+    field: 'Discontinued',
+    filter: 'boolean',
+    _width: 120,
+    filterable: true
+  }]
+};

@@ -33,5 +33,8 @@ import { StatePersistingService } from './kendo-ui-table.service';
     PopupModule
   ],
   providers: [StatePersistingService],
+  exports: [
+    KendoUiTableComponent
+  ]
 })
 export class KendoUiTableModule { }
