@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ClipboardService } from 'ngx-clipboard';
+
 @Component({
   selector: 'app-kendo-editor',
   templateUrl: './kendo-editor.component.html',
@@ -25,18 +27,19 @@ export class KendoEditorComponent implements OnInit {
         </ul>
     `;
 
-  constructor() { }
+  constructor(
+    private clipboardApi: ClipboardService
+  ) { }
 
   ngOnInit(): void {
   }
 
   copyToClipBoard() {
-
+    this.clipboardApi.copyFromContent(this.clipBoardContent);
   }
 
   valueChanged(event: any) {
-    console.log('event = ', event);
-    debugger;
+    this.clipBoardContent = event;
   }
 
 }

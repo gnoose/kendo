@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { EditorModule } from '@progress/kendo-angular-editor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { KendoEditorComponent } from './kendo-editor.component';
 
@@ -17,7 +18,8 @@ import { KendoEditorComponent } from './kendo-editor.component';
     CommonModule,
     BrowserModule,
     EditorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ClipboardModule
   ]
 })
 export class KendoEditorModule { }
