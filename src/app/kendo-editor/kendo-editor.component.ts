@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KendoEditorComponent implements OnInit {
 
+  public clipBoardContent = '';
   public value = `
         <p>
             The Kendo Angular UI Editor allows your users to edit HTML in a familiar, user-friendly way.<br />
@@ -27,6 +28,15 @@ export class KendoEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  copyToClipBoard() {
+
+  }
+
+  valueChanged(event: any) {
+    console.log('event = ', event);
+    debugger;
   }
 
 }

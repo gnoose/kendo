@@ -30,8 +30,7 @@ export class KendoUiTableComponent {
     public persistingService: StatePersistingService,
     private popupService: PopupService
     ) {
-    const savedGrids: GridSettings[] = this.persistingService.getArray<GridSettings>('gridSettings');
-    this.savedList = savedGrids;
+    this.savedList = this.persistingService.getArray<GridSettings>('gridSettings') as GridSettings[];
 
     this.emptyFilter = {
       logic: 'and',
@@ -58,8 +57,7 @@ export class KendoUiTableComponent {
   }
 
   public togglePopup(anchor: HTMLElement, template: TemplateRef<any>) {
-    const savedGrids: GridSettings[] = this.persistingService.getArray<GridSettings>('gridSettings');
-    this.savedList = savedGrids;
+    this.savedList = this.persistingService.getArray<GridSettings>('gridSettings') as GridSettings[];
     if (this.popupRef) {
       this.popupRef.close();
       this.popupRef = null;
