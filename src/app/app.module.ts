@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { KendoUiTableModule } from './kendo-component/kendo-ui-table.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PopupModule } from '@progress/kendo-angular-popup';
 
 import 'hammerjs';
-import { PopupModule } from '@progress/kendo-angular-popup';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
+import { AppRoutingModule } from './app-routing.module';
+import { KendoUiTableModule } from './kendo-ui-table/kendo-ui-table.module';
+import { KendoEditorModule } from './kendo-editor/kendo-editor.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     KendoUiTableModule,
     PopupModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    KendoEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

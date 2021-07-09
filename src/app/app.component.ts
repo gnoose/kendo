@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { process } from '@progress/kendo-data-query';
 
 import { sampleProducts } from './core/data/sample-data';
-import { GridSettings } from './kendo-component/kendo-ui-table.model';
+import { GridSettings } from './kendo-ui-table/kendo-ui-table.model';
 
 @Component({
   selector: 'app-root',
