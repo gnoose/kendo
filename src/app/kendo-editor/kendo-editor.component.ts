@@ -86,12 +86,14 @@ export class KendoEditorComponent implements OnInit {
     });
   }
 
-  setFontSize(fontElement: any) {
+  setFontSize(fontElement: any, kendoElement: any) {
     fontElement.value = 12;
+    kendoElement.exec('fontSize', 12);
   }
 
-  setFontFamily(fontElement: any) {
+  setFontFamily(fontElement: any, kendoElement: any) {
     fontElement.value = 'Arial,"Helvetica Neue",Helvetica,sans-serif';
+    kendoElement.exec('fontFamily', 'Arial,"Helvetica Neue",Helvetica,sans-serif');
   }
 
   fontFamilyChanged(event: any, obj: any) {
