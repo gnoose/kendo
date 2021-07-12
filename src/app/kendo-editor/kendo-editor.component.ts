@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ClipboardService } from 'ngx-clipboard';
 import { FontSizeItem } from '@progress/kendo-angular-editor/dist/es2015/common/font-size-item.interface';
+import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
 
 @Component({
   selector: 'app-kendo-editor',
@@ -88,17 +89,16 @@ export class KendoEditorComponent implements OnInit {
 
   setFontSize(fontElement: any, kendoElement: any) {
     fontElement.value = 12;
+    setTimeout(() => {this.execFontSize(kendoElement);})
+  }
+
+  execFontSize(kendoElement: any) {
     kendoElement.exec('fontSize', 12);
   }
 
   setFontFamily(fontElement: any, kendoElement: any) {
     fontElement.value = 'Arial,"Helvetica Neue",Helvetica,sans-serif';
     kendoElement.exec('fontFamily', 'Arial,"Helvetica Neue",Helvetica,sans-serif');
-  }
-
-  fontFamilyChanged(event: any, obj: any) {
-    console.log('obj = ', obj);
-    console.log('event = ', event);
   }
 
 }
