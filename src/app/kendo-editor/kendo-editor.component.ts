@@ -12,8 +12,7 @@ import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
 export class KendoEditorComponent implements OnInit {
 
   public clipBoardContent = '';
-  public value = `
-        <p>
+  public value = `<p>
             The Kendo Angular UI Editor allows your users to edit HTML in a familiar, user-friendly way.<br />
             In this version, the Editor provides the core HTML editing engine, which includes basic text formatting, hyperlinks and lists.
             The widget <strong>outputs identical HTML</strong> across all major browsers, follows
@@ -26,8 +25,7 @@ export class KendoEditorComponent implements OnInit {
             <li>Hyperlinks</li>
             <li>Cross-browser support</li>
             <li>Identical HTML output across browsers</li>
-        </ul>
-    `;
+        </ul>`;
 
   public fontList: FontSizeItem[] = [
     {
@@ -69,6 +67,7 @@ export class KendoEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.clipBoardContent = this.value;
   }
 
   copyToClipBoard() {
@@ -77,6 +76,40 @@ export class KendoEditorComponent implements OnInit {
 
   valueChanged(event: any) {
     this.clipBoardContent = event;
+  }
+
+  selectAll(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {
+    fontFamilyElement.value = 'Arial,"Helvetica Neue",Helvetica,sans-serif';
+    kendoElement.exec('fontFamily', 'Arial,"Helvetica Neue",Helvetica,sans-serif');
+
+    fontSizeElement.value = 12;
+
+    let block = kendoElement.value;
+
+    let rgx = new RegExp(/<p>/gi);
+    block = block.replace(rgx, "<p><span style=\"font-size: 12px; font-family: Arial,&quot;Helvetica Neue&quot;,Helvetica,sans-serif;\">");
+
+    rgx = new RegExp(/<\/p>/gi);
+    block = block.replace(rgx, "</span></p>");
+    this.value = block;
+    setTimeout(() => {this.execFontSize(kendoElement);})
+  }
+
+  selectText(node: any) {
+    node = document.querySelector("body > div");
+    if (document.createRange()) {
+      const range = document.createRange();
+      range.setStart(node, 0);
+      range.setEnd(node, 9999);
+    } else if (window.getSelection) {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      // range.selectNodeContents(node);
+      // selection.removeAllRanges();
+      // selection.addRange(range);
+    } else {
+      console.warn("Could not select text in node: Unsupported browser.");
+    }
   }
 
   addFont() {
