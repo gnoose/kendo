@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { ClipboardService } from 'ngx-clipboard';
 import { FontSizeItem } from '@progress/kendo-angular-editor/dist/es2015/common/font-size-item.interface';
-import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
 
 @Component({
   selector: 'app-kendo-editor',
@@ -78,11 +77,9 @@ export class KendoEditorComponent implements OnInit {
     this.clipBoardContent = event;
   }
 
-  selectAll(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {
+  setNewStyle(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {
     fontFamilyElement.value = 'Arial,"Helvetica Neue",Helvetica,sans-serif';
     kendoElement.exec('fontFamily', 'Arial,"Helvetica Neue",Helvetica,sans-serif');
-
-    fontSizeElement.value = 12;
 
     let block = kendoElement.value;
 
@@ -92,24 +89,7 @@ export class KendoEditorComponent implements OnInit {
     rgx = new RegExp(/<\/p>/gi);
     block = block.replace(rgx, "</span></p>");
     this.value = block;
-    setTimeout(() => {this.execFontSize(kendoElement);})
-  }
-
-  selectText(node: any) {
-    node = document.querySelector("body > div");
-    if (document.createRange()) {
-      const range = document.createRange();
-      range.setStart(node, 0);
-      range.setEnd(node, 9999);
-    } else if (window.getSelection) {
-      const selection = window.getSelection();
-      const range = document.createRange();
-      // range.selectNodeContents(node);
-      // selection.removeAllRanges();
-      // selection.addRange(range);
-    } else {
-      console.warn("Could not select text in node: Unsupported browser.");
-    }
+    setTimeout(() => {this.setFontSize(fontSizeElement, kendoElement)});
   }
 
   addFont() {
