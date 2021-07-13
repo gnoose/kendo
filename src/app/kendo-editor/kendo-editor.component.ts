@@ -78,16 +78,15 @@ export class KendoEditorComponent implements OnInit {
   }
 
   setNewStyle(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {
-    let block = kendoElement.value;
-
-    let rgx = new RegExp(/<p>/gi);
-    block = block.replace(rgx, "<p><span style=\"font-size: 12px; font-family: Arial,&quot;Helvetica Neue&quot;,Helvetica,sans-serif;\">");
-
-    rgx = new RegExp(/<\/p>/gi);
-    block = block.replace(rgx, "</span></p>");
-    this.value = block;
-    setTimeout(() => {this.setFontFamily(fontFamilyElement, kendoElement)});
-    setTimeout(() => {this.setFontSize(fontSizeElement, kendoElement)});
+    const node = kendoElement.element.nativeElement.children[1].children[0].contentWindow.document.querySelector("body > div");
+    let selection = kendoElement.element.nativeElement.children[1].children[0].contentWindow.getSelection() as any;
+    let range = kendoElement.element.nativeElement.children[1].children[0].contentWindow.document.createRange();
+    range.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    node.focus();
+    setTimeout(() => {this.setFontFamily(fontFamilyElement, kendoElement)}, 10);
+    setTimeout(() => {this.setFontSize(fontSizeElement, kendoElement)}, 10);
   }
 
   addFont() {
