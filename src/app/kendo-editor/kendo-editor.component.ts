@@ -10,7 +10,6 @@ import { FontSizeItem } from '@progress/kendo-angular-editor/dist/es2015/common/
 })
 export class KendoEditorComponent implements OnInit {
 
-  public clipBoardContent = '';
   public value = `<p>
             The Kendo Angular UI Editor allows your users to edit HTML in a familiar, user-friendly way.<br />
             In this version, the Editor provides the core HTML editing engine, which includes basic text formatting, hyperlinks and lists.
@@ -66,15 +65,14 @@ export class KendoEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.clipBoardContent = this.value;
   }
 
-  copyToClipBoard() {
-    this.clipboardApi.copyFromContent(this.clipBoardContent);
+  copyToClipBoard(kendoElement: any) {
+    this.clipboardApi.copyFromContent(kendoElement.value);
   }
 
   valueChanged(event: any) {
-    this.clipBoardContent = event;
+    // TODO: get event once the content change
   }
 
   setNewStyle(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {

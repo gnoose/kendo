@@ -3,7 +3,7 @@
   <button (click)="setFontSize(toolbar_fontSize, kendo_editor)">Set FontSize</button>
   <button (click)="setFontFamily(toolbar_fontFamily, kendo_editor)">Set FontFamily</button>
   <button (click)="addFont()">Add New FontSize</button>
-  <button (click)="copyToClipBoard()">Copy to ClipBoard</button>
+  <button (click)="copyToClipBoard(kendo_editor)">Copy to ClipBoard</button>
 </div>
 
 <kendo-editor #kendo_editor [value]="value" (valueChange)="valueChanged($event)" style="height: 450px;">
