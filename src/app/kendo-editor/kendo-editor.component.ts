@@ -78,9 +78,6 @@ export class KendoEditorComponent implements OnInit {
   }
 
   setNewStyle(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {
-    fontFamilyElement.value = 'Arial,"Helvetica Neue",Helvetica,sans-serif';
-    kendoElement.exec('fontFamily', 'Arial,"Helvetica Neue",Helvetica,sans-serif');
-
     let block = kendoElement.value;
 
     let rgx = new RegExp(/<p>/gi);
@@ -89,6 +86,7 @@ export class KendoEditorComponent implements OnInit {
     rgx = new RegExp(/<\/p>/gi);
     block = block.replace(rgx, "</span></p>");
     this.value = block;
+    setTimeout(() => {this.setFontFamily(fontFamilyElement, kendoElement)});
     setTimeout(() => {this.setFontSize(fontSizeElement, kendoElement)});
   }
 
