@@ -1,5 +1,5 @@
 <div class="clipboard-section">
-  <button (click)="setNewStyle(kendo_editor, toolbar_fontSize, toolbar_fontFamily)">Set New Style</button>
+  <button (click)="setNewStyle(kendo_editor, toolbar_fontSize, toolbar_fontFamily, toolbar_foreColor)">Set New Style</button>
   <button (click)="setFontSize(toolbar_fontSize, kendo_editor)">Set FontSize</button>
   <button (click)="setFontFamily(toolbar_fontFamily, kendo_editor)">Set FontFamily</button>
   <button (click)="addFont()">Add New FontSize</button>
@@ -31,7 +31,7 @@
     <kendo-toolbar-dropdownlist kendoEditorFormat></kendo-toolbar-dropdownlist>
     <kendo-toolbar-dropdownlist #toolbar_fontSize kendoEditorFontSize></kendo-toolbar-dropdownlist>
     <kendo-toolbar-dropdownlist #toolbar_fontFamily kendoEditorFontFamily></kendo-toolbar-dropdownlist>
-    <kendo-toolbar-colorpicker kendoEditorForeColor></kendo-toolbar-colorpicker>
+    <kendo-toolbar-colorpicker #toolbar_foreColor kendoEditorForeColor></kendo-toolbar-colorpicker>
     <kendo-toolbar-colorpicker kendoEditorBackColor view="gradient"></kendo-toolbar-colorpicker>
     <kendo-toolbar-buttongroup>
       <kendo-toolbar-button kendoEditorInsertUnorderedListButton></kendo-toolbar-button>

@@ -75,7 +75,7 @@ export class KendoEditorComponent implements OnInit {
     // TODO: get event once the content change
   }
 
-  setNewStyle(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, ) {
+  setNewStyle(kendoElement: any, fontSizeElement: any, fontFamilyElement: any, foreColorElement: any) {
     const node = kendoElement.element.nativeElement.children[1].children[0].contentWindow.document.querySelector("body > div");
     let selection = kendoElement.element.nativeElement.children[1].children[0].contentWindow.getSelection() as any;
     let range = kendoElement.element.nativeElement.children[1].children[0].contentWindow.document.createRange();
@@ -83,8 +83,25 @@ export class KendoEditorComponent implements OnInit {
     selection.removeAllRanges();
     selection.addRange(range);
     node.focus();
-    setTimeout(() => {this.setFontFamily(fontFamilyElement, kendoElement)}, 10);
-    setTimeout(() => {this.setFontSize(fontSizeElement, kendoElement)}, 10);
+
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.setForeColor(foreColorElement, kendoElement);
+        this.setFontFamily(fontFamilyElement, kendoElement);
+        this.setFontSize(fontSizeElement, kendoElement);
+        node.blur();
+        resolve(true);
+      }, 0);
+    })
+
+    myPromise.then(() => {
+      selection.removeAllRanges();
+    });
+
+    // setTimeout(() => {this.setForeColor(foreColorElement, kendoElement)}, 0);
+    // setTimeout(() => {this.setFontFamily(fontFamilyElement, kendoElement)}, 0);
+    // setTimeout(() => {this.setFontSize(fontSizeElement, kendoElement)}, 0);
+
   }
 
   addFont() {
@@ -93,6 +110,11 @@ export class KendoEditorComponent implements OnInit {
       size: newFontSize,
       text: `${newFontSize}px`
     });
+  }
+
+  setForeColor(foreColorElement: any, kendoElement: any) {
+    foreColorElement.value = "#000";
+    kendoElement.exec("foreColor", { value: "#000" });
   }
 
   setFontSize(fontElement: any, kendoElement: any) {
